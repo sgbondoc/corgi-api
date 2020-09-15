@@ -5,7 +5,14 @@ const User = mongoose.model('User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const key = process.env.JWT_SECRET
+const requireLogin = require('../middleware/requireLogin')
 
+
+router.get('/protected', requireLogin, (request, response) => {
+    response.send("hello user")
+})
+
+// sign up or register user
 router.post('/register', (request,response) => {
     const { name, email, password } = request.body
     if (!name || !email || !password) {
@@ -39,7 +46,8 @@ router.post('/register', (request,response) => {
         console.log(err)
     })
 })        
-      
+
+// login user
 router.post('/login', (request, response) => {
     const { email, password } = request.body
     if (!email || !password) {
