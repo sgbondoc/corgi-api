@@ -9,6 +9,9 @@ const mongoose = require('mongoose')
 
 const port = process.env.PORT || 5000
 
+// middleware JSON parsing
+app.use(express.json())
+
 // mongoose mongodb connections
 const connectionString = process.env.MONGODB_URI || "mongodb://localhost:27017/corgi"
 
@@ -26,6 +29,9 @@ mongoose.connect(connectionString, configOptions)
 
 // for models
 require('./models/user')
+
+// for routes
+app.use(require('./routes/auth'))
 
 // connection
 app.listen(port, () => console.log(`Server is running on port ${port}`))
