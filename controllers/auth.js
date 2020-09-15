@@ -9,7 +9,7 @@ const requireLogin = require('../middleware/requireLogin')
 
 
 // sign up or register user
-router.post('/register', (request,response) => {
+router.post('/register', (request, response) => {
     const { name, email, password } = request.body
     if (!name || !email || !password) {
         return response.status(422).json({
