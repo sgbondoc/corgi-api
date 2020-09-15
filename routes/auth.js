@@ -8,10 +8,6 @@ const key = process.env.JWT_SECRET
 const requireLogin = require('../middleware/requireLogin')
 
 
-router.get('/protected', requireLogin, (request, response) => {
-    response.send("hello user")
-})
-
 // sign up or register user
 router.post('/register', (request,response) => {
     const { name, email, password } = request.body

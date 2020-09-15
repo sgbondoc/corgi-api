@@ -29,9 +29,11 @@ mongoose.connect(connectionString, configOptions)
 
 // for models
 require('./models/user')
+require('./models/post')
 
 // for routes
 app.use(require('./routes/auth'))
+app.use(require('./routes/post'))
 
 // connection
 app.listen(port, () => console.log(`Server is running on port ${port}`))

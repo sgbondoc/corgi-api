@@ -20,7 +20,7 @@ module.exports = (request, response, next) => {
         const {_id} = payload
         User.findById(_id).then(userData => {
             request.user = userData
+            next()
         })
-        next()
     })
 }
