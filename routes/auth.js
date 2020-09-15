@@ -39,6 +39,32 @@ router.post('/register', (request,response) => {
     })
 })        
       
+router.post('/login', (request, response) => {
+    const { email, password } = request.body
+    if (!email || !password) {
+        return response.status(422).json({
+            error: "Please add email or password"})
+    }
     
+    User.findOne({ email: email })
+    .then(savedUser => {
+        console.log(savedUser)
+        if (!savedUser) {
+            return response.status(422).json({error: "Invalid credentials"})
+        }
+        bcrypt.compare(password, savedUser.password)
+        .then(doMatch => {
+            if (doMatch) {
+                response.json({message: "Successfully signed in"})
+            } else {
+                return response.status(422).json({error: "Invalid credentials" })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })    
+    })    
+})
+
 
 module.exports = router
