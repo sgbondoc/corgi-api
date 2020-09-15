@@ -33,7 +33,7 @@ require('./models/post')
 
 // for routes
 app.use(require('./routes/auth'))
-app.use(require('./routes/post'))
+app.use(require('./routes/posts'))
 
 // connection
 app.listen(port, () => console.log(`Server is running on port ${port}`))
