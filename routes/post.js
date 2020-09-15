@@ -5,6 +5,20 @@ const requireLogin = require('../middleware/requireLogin')
 const Post = mongoose.model('Post')
 
 
+// get all posts
+router.get('/posts', (request, response) => {
+    Post.find()
+    .populate('user', '_id name')
+    .then(posts => {
+        response.json({posts})
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
+
+
+// create post
 router.post('/createpost', requireLogin, (request, response) => {
     const { title, caption } = request.body
     if (!title || !caption) {
