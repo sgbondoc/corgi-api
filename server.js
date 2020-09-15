@@ -26,7 +26,6 @@ mongoose.connect(connectionString, configOptions)
     .then(() => console.log("MongoDB successfully connected", connectionString))
     .catch(err => console.log(`MongoDB connection error: ${err}`))
 
-
 // for models
 require('./models/user')
 require('./models/post')
