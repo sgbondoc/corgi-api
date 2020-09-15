@@ -3,7 +3,8 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken')
+const key = process.env.JWT_SECRET
 
 router.post('/register', (request,response) => {
     const { name, email, password } = request.body
@@ -45,17 +46,18 @@ router.post('/login', (request, response) => {
         return response.status(422).json({
             error: "Please add email or password"})
     }
-    
+
     User.findOne({ email: email })
     .then(savedUser => {
-        console.log(savedUser)
         if (!savedUser) {
             return response.status(422).json({error: "Invalid credentials"})
         }
         bcrypt.compare(password, savedUser.password)
         .then(doMatch => {
             if (doMatch) {
-                response.json({message: "Successfully signed in"})
+                // response.json({message: "Successfully signed in"})
+                const token = jwt.sign({_id: savedUser._id}, key)
+                response.json({token})
             } else {
                 return response.status(422).json({error: "Invalid credentials" })
             }
