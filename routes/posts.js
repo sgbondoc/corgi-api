@@ -1,9 +1,8 @@
 // require statements
 const router = require('express').Router()
 const mongoose = require('mongoose')
-const requireLogin = require('../middleware/requireLogin')
-const { response } = require('express')
 const Post = mongoose.model('Post')
+const requireLogin = require('../middleware/requireLogin')
 
 
 // get all posts by all users
