@@ -1,13 +1,16 @@
 // require statements
-const express = require('express')
-const app = express()
-
-// for mongodb atlas - needs to be right under express require statements
 require("dotenv").config()
+const express = require('express')
+const socketio = require('socket.io')
+const http = require('http')
+
+const app = express()
+const server = http.createServer(app)
+const io = socketio(server)
+
+const PORT = process.env.PORT || 5000
 
 const mongoose = require('mongoose')
-
-const port = process.env.PORT || 5000
 
 // middleware JSON parsing
 app.use(express.json())
@@ -35,4 +38,4 @@ app.use(require('./controllers/auth'))
 app.use(require('./controllers/posts'))
 
 // connection
-app.listen(port, () => console.log(`Server is running on port ${port}`))
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
