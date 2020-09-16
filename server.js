@@ -4,11 +4,21 @@ const express = require('express')
 const socketio = require('socket.io')
 const http = require('http')
 
+const PORT = process.env.PORT || 5000
+
 const app = express()
+
 const server = http.createServer(app)
 const io = socketio(server)
 
-const PORT = process.env.PORT || 5000
+// socket io connections
+io.on('connection', (socket) => {
+    console.log("User has connected")
+
+    socket.on('disconnect', () => {
+        console.log("User has disconnected")
+    })
+})
 
 const mongoose = require('mongoose')
 
@@ -36,6 +46,7 @@ require('./models/post')
 // for controllers
 app.use(require('./controllers/auth'))
 app.use(require('./controllers/posts'))
+app.use(require('./controllers/chat'))
 
 // connection
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
