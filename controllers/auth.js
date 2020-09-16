@@ -61,7 +61,8 @@ router.post('/login', (request, response) => {
             if (doMatch) {
                 // user successfully signed in and token is assigned
                 const token = jwt.sign({_id: savedUser._id}, key)
-                response.json({token})
+                const { _id, name, email } = savedUser
+                response.json({token, user: { _id, name, email }})
             } else {
                 return response.status(422).json({error: "Invalid credentials" })
             }
