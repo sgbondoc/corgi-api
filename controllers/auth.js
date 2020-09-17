@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const key = process.env.JWT_SECRET
 const requireLogin = require('../middleware/requireLogin')
+const { response } = require('express')
 
 
 // sign up or register user
@@ -71,6 +72,15 @@ router.post('/login', (request, response) => {
             console.log(err)
         })    
     })    
+})
+
+router.delete('/logout', (request,response) => {
+    if (!request.user) return response.json({
+        message: "No user to log out"
+    })
+
+    request.logout()
+    response.json({message: "User logged out"})
 })
 
 
