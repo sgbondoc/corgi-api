@@ -59,7 +59,7 @@ router.post('/login', (request, response) => {
         bcrypt.compare(password, savedUser.password)
         .then(doMatch => {
             if (doMatch) {
-                // user successfully signed in and token is assigned
+                // user successfully logged in and token is assigned
                 const token = jwt.sign({_id: savedUser._id}, key)
                 const { _id, name, email } = savedUser
                 response.json({token, user: { _id, name, email }})
