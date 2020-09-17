@@ -6,7 +6,7 @@ const requireLogin = require('../middleware/requireLogin')
 
 
 // get all posts by all users
-router.get('/posts', (request, response) => {
+router.get('/posts', requireLogin, (request, response) => {
     Post.find()
     .populate('user', '_id name')
     .then(posts => {
