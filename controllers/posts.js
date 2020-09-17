@@ -19,8 +19,8 @@ router.get('/posts', (request, response) => {
 
 // create post
 router.post('/createpost', requireLogin, (request, response) => {
-    const { title, caption } = request.body
-    if (!title || !caption) {
+    const { title, caption, url } = request.body
+    if (!title || !caption || !url) {
         response.status(422).json({
             error: "These are required fields"})
     }
@@ -28,6 +28,7 @@ router.post('/createpost', requireLogin, (request, response) => {
     const post = new Post({
         title,
         caption,
+        url,
         user: request.user
     })
     post.save().then(result => {
