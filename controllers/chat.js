@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', (request, response) => {
-    response.send("Server is up and running")
+    response.send("hello world")
 })
 
 module.exports = router
