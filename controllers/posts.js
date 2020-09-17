@@ -52,5 +52,23 @@ router.get('/myposts', requireLogin, (request, response) => {
     })
 })
 
+router.delete('/deletepost/:postId', requireLogin, (request, response) => {
+    Post.findOne({ _id: request.params.postId })
+    .populate('user', '_id')
+    .exec((err, post) => {
+        if (err || !post) {
+            return response.status(422).json({error: err})
+        }
+        if (post.user._id.toString() === request.user._id.toString()) {
+            post.remove()
+            .then(result => {
+                response.json({message: "Post deleted"})
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    })
+})
+
 
 module.exports = router
