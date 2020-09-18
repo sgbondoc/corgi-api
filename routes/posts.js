@@ -9,6 +9,7 @@ const requireLogin = require('../middleware/requireLogin')
 router.get('/posts', requireLogin, (request, response) => {
     Post.find()
     .populate('user', '_id name')
+    .populate('comments.user', '_id name')
     .then(posts => {
         response.json({posts})
     })
@@ -67,6 +68,26 @@ router.delete('/deletepost/:postId', requireLogin, (request, response) => {
             }).catch(err => {
                 console.log(err)
             })
+        }
+    })
+})
+
+// add comments to posts
+router.put('/comment', requireLogin, (request, response) => {
+    const comment = {
+        text: request.body.text,
+        user: request.user._id
+    }
+    Post.findByIdAndUpdate(request.body.postId, {
+        $push: { comments: comment }
+    }, {new: true})
+    .populate('comments.user', '_id name')
+    .populate('user', '_id name')
+    .exec((err, result) => {
+        if (err) {
+            return response.status(422).json({ error: err })
+        } else {
+            response.json(result)
         }
     })
 })
