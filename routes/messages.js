@@ -37,4 +37,23 @@ router.post('/createmessage', requireLogin, (request, response) => {
     })
 })
 
+// delete message created by user id
+router.delete('/deletemessage/:messageId', requireLogin, (request, response) => {
+    Message.findOne({ _id: request.params.messageId })
+    .populate('user', '_id')
+    .exec((err, message) => {
+        if (err || !message) {
+            return response.status(422).json({error: err})
+        }
+        if (message.user._id.toString() === request.user._id.toString()) {
+            message.remove()
+            .then(result => {
+                response.json(result)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    })
+})
+
 module.exports = router
