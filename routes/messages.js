@@ -11,7 +11,7 @@ router.get('/messages', requireLogin, (request, response) => {
     .populate('user', '_id name')
     .populate('replies.user', '_id name')
     .then(messages => {
-        response.json({messages})
+        response.json({ messages })
     })
     .catch(err => {
         console.log(err)
