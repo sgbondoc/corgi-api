@@ -1,27 +1,18 @@
 // require statements
 require("dotenv").config()
 const express = require('express')
-const socketio = require('socket.io')
-const http = require('http')
+const app = express()
+
 const cors = require('cors')
+app.use(cors())
 
 const PORT = process.env.PORT || 5000
 
-const app = express()
-
-const server = http.createServer(app)
-const io = socketio(server)
-
-app.use(cors())
-
-// socket io connections
-io.on('connection', (socket) => {
-    console.log("User has connected")
-
-    socket.on('disconnect', () => {
-        console.log("User has disconnected")
-    })
-})
+// app.use(function(request, response, next) {
+//     response.header("Access-Control-Allow-Origin", "*")
+//     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+//     next()
+// })
 
 const mongoose = require('mongoose')
 
@@ -46,10 +37,10 @@ mongoose.connect(connectionString, configOptions)
 require('./models/user')
 require('./models/post')
 
-// for controllers
-app.use(require('./controllers/auth'))
-app.use(require('./controllers/posts'))
-app.use(require('./controllers/chat'))
+// for routes
+app.use(require('./routes/auth'))
+app.use(require('./routes/posts'))
+app.use(require('./routes/chat'))
 
 // connection
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
