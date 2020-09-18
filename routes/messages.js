@@ -3,11 +3,13 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const Message = mongoose.model('Message')
 const requireLogin = require('../middleware/requireLogin')
+const { request } = require('express')
 
 // get all messages by all users
 router.get('/messages', requireLogin, (request, response) => {
     Message.find()
     .populate('user', '_id name')
+    .populate('replies.user', '_id name')
     .then(messages => {
         response.json({messages})
     })
@@ -52,6 +54,26 @@ router.delete('/deletemessage/:messageId', requireLogin, (request, response) => 
             }).catch(err => {
                 console.log(err)
             })
+        }
+    })
+})
+
+// add replies to messages
+router.put('/reply', requireLogin, (request, response) => {
+    const reply = {
+        text: request.body.text,
+        user: request.user._id
+    }
+    Message.findByIdAndUpdate(request.body.messageId, {
+        $push: { replies: reply }
+    }, {new: true})
+    .populate('replies.user', '_id name')
+    .populate('user', '_id name')
+    .exec((err, result) => {
+        if (err) {
+            return response.status(422).json({ error: err })
+        } else {
+            response.json(result)
         }
     })
 })

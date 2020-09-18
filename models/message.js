@@ -1,6 +1,7 @@
 // require statement
 const mongoose = require('mongoose')
 
+
 // message schema
 const MessageSchema = new mongoose.Schema({
     subject: {
@@ -14,7 +15,14 @@ const MessageSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    replies: [{
+        text: String,
+        user: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'User' 
+        }
+    }]
 })
 
 mongoose.model('Message', MessageSchema)
