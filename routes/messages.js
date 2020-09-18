@@ -18,8 +18,8 @@ router.get('/messages', requireLogin, (request, response) => {
 
 // create message
 router.post('/createmessage', requireLogin, (request, response) => {
-    const { title, caption, url } = request.body
-    if (!title || !caption || !url) {
+    const { subject, body } = request.body
+    if (!subject || !body) {
         response.status(422).json({
             error: "These are required fields"})
     }
