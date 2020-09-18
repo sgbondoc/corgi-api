@@ -52,6 +52,7 @@ router.get('/myposts', requireLogin, (request, response) => {
     })
 })
 
+// delete post created by user id
 router.delete('/deletepost/:postId', requireLogin, (request, response) => {
     Post.findOne({ _id: request.params.postId })
     .populate('user', '_id')
