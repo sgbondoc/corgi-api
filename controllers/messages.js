@@ -12,16 +12,14 @@ const index = (request, response) => {
     .then(messages => {
         response.json({ messages })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => {console.log(err)})
 }
 
 // create message
 const create = (request, response) => {
     const { subject, body } = request.body
     if (!subject || !body) {
-        response.status(422).json({
+        response.json({
             error: "These are required fields"})
     }
     request.user.password = undefined
@@ -44,15 +42,13 @@ const destroy = (request, response) => {
     .populate('user', '_id')
     .exec((err, message) => {
         if (err || !message) {
-            return response.status(422).json({error: err})
+            return response.json({error: err})
         }
         if (message.user._id.toString() === request.user._id.toString()) {
             message.remove()
             .then(result => {
                 response.json(result)
-            }).catch(err => {
-                console.log(err)
-            })
+            }).catch(err => { console.log(err) })
         }
     })
 }
@@ -70,7 +66,7 @@ const update = (request, response) => {
     .populate('user', '_id name')
     .exec((err, result) => {
         if (err) {
-            return response.status(422).json({ error: err })
+            return response.json({ error: err })
         } else {
             response.json(result)
         }
