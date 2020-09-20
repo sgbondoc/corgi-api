@@ -12,16 +12,14 @@ const index = (request, response) => {
     .then(posts => {
         response.json({ posts })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => { console.log(err) })
 }
 
 // create post
 const create = (request, response) => {
     const { title, caption, url } = request.body
     if (!title || !caption || !url) {
-        response.status(422).json({
+        response.json({
             error: "These are required fields"})
     }
     request.user.password = undefined
@@ -34,9 +32,7 @@ const create = (request, response) => {
     post.save().then(result => {
         response.json({ post: result })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => { console.log(err) })
 }
 
 // get all posts by single user id
@@ -45,7 +41,7 @@ const show = (request, response) => {
     Post.find({ user: request.user._id })
     .populate('user', '_id name')
     .then(myPosts => {
-        response.json({myPosts})
+        response.json({ myPosts })
     })
     .catch(err => {
         console.log(err)
@@ -58,15 +54,13 @@ const destroy = (request, response) => {
     .populate('user', '_id')
     .exec((err, post) => {
         if (err || !post) {
-            return response.status(422).json({error: err})
+            return response.json({ error: err })
         }
         if (post.user._id.toString() === request.user._id.toString()) {
             post.remove()
             .then(result => {
                 response.json(result)
-            }).catch(err => {
-                console.log(err)
-            })
+            }).catch(err => { console.log(err) })
         }
     })
 }
@@ -84,7 +78,7 @@ const update = (request, response) => {
     .populate('user', '_id name')
     .exec((err, result) => {
         if (err) {
-            return response.status(422).json({ error: err })
+            return response.json({ error: err })
         } else {
             response.json(result)
         }
