@@ -1,8 +1,7 @@
 // require statements
 const jwt = require('jsonwebtoken')
 const key = process.env.JWT_SECRET
-const mongoose = require('mongoose')
-const User = mongoose.model('User')
+const User = require('../models/user')
 
 // middleware to verify user token
 module.exports = (request, response, next) => {

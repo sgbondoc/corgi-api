@@ -8,6 +8,8 @@ app.use(cors())
 
 const PORT = process.env.PORT || 5000
 
+const routes = require('./routes')
+
 // app.use(function(request, response, next) {
 //     response.header("Access-Control-Allow-Origin", "*")
 //     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
@@ -33,15 +35,13 @@ mongoose.connect(connectionString, configOptions)
     .then(() => console.log("MongoDB successfully connected", connectionString))
     .catch(err => console.log(`MongoDB connection error: ${err}`))
 
-// for models
-require('./models/user')
-require('./models/post')
-require('./models/message')
+// middleware jwt
+require('./middleware/requireLogin')
 
-// for routes
-app.use(require('./routes/auth'))
-app.use(require('./routes/posts'))
-app.use(require('./routes/messages'))
+// middleware API routes
+app.use('/', routes.posts)
+app.use('/', routes.messages)
+app.use('/', routes.auth)
 
 // connection
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))

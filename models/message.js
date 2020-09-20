@@ -1,7 +1,6 @@
 // require statement
 const mongoose = require('mongoose')
 
-
 // message schema
 const MessageSchema = new mongoose.Schema({
     subject: {
@@ -23,6 +22,8 @@ const MessageSchema = new mongoose.Schema({
             ref: 'User' 
         }
     }]
-})
+}, { timestamps: true })
 
-mongoose.model('Message', MessageSchema)
+const Message = mongoose.model('Message', MessageSchema)
+
+module.exports = Message
