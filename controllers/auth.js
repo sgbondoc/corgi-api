@@ -10,14 +10,14 @@ const key = process.env.JWT_SECRET
 const register = (request, response) => {
     const { name, email, password } = request.body
     if (!name || !email || !password) {
-        return response.status(422).json({
+        return response.json({
             error: "Please enter a name, email, and password"})
     } 
 
     User.findOne({ email: email })
     .then((savedUser) => {
         if (savedUser) {
-            return response.status(422).json({
+            return response.json({
                 error: "A user with that email already exists"})
         }
         bcrypt.hash(password, 12)
@@ -45,14 +45,14 @@ const register = (request, response) => {
 const login = (request, response) => {
     const { email, password } = request.body
     if (!email || !password) {
-        return response.status(422).json({
+        return response.json({
             error: "Please add email or password"})
     }
 
     User.findOne({ email: email })
     .then(savedUser => {
         if (!savedUser) {
-            return response.status(422).json({error: "Invalid credentials"})
+            return response.json({error: "Invalid credentials"})
         }
         bcrypt.compare(password, savedUser.password)
         .then(doMatch => {
@@ -62,7 +62,7 @@ const login = (request, response) => {
                 const { _id, name, email } = savedUser
                 response.json({token, user: { _id, name, email }})
             } else {
-                return response.status(422).json({error: "Invalid credentials" })
+                return response.json({error: "Invalid credentials" })
             }
         })
         .catch(err => {
