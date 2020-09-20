@@ -10,6 +10,7 @@ router.get('/posts', requireLogin, (request, response) => {
     Post.find()
     .populate('user', '_id name')
     .populate('comments.user', '_id name')
+    .sort('-createdAt')
     .then(posts => {
         response.json({posts})
     })
