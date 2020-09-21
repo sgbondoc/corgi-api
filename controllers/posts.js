@@ -6,8 +6,10 @@ const Post = require('../models/post')
 // get all posts by all users
 const index = (request, response) => {
     Post.find()
+    // provide access to user info
     .populate('user', '_id name')
     .populate('comments.user', '_id name')
+    // top sort lastly created item based on timestamp
     .sort('-createdAt')
     .then(posts => {
         response.json({ posts })
@@ -43,9 +45,7 @@ const show = (request, response) => {
     .then(myPosts => {
         response.json({ myPosts })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => {console.log(err)})
 }
 
 // delete post created by user id
@@ -56,6 +56,7 @@ const destroy = (request, response) => {
         if (err || !post) {
             return response.json({ error: err })
         }
+        // convert type to be the same before comparing
         if (post.user._id.toString() === request.user._id.toString()) {
             post.remove()
             .then(result => {

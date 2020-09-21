@@ -6,8 +6,10 @@ const Message = require('../models/message')
 // get all messages by all users
 const index = (request, response) => {
     Message.find()
+    // provide access to user info
     .populate('user', '_id name')
     .populate('replies.user', '_id name')
+    // top sort lastly created item based on timestamp
     .sort('-createdAt')
     .then(messages => {
         response.json({ messages })
@@ -31,9 +33,7 @@ const create = (request, response) => {
     message.save().then(result => {
         response.json({ message: result })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => {console.log(err)})
 }
 
 // delete message created by user id
@@ -44,6 +44,7 @@ const destroy = (request, response) => {
         if (err || !message) {
             return response.json({error: err})
         }
+        // convert type to be the same before comparing
         if (message.user._id.toString() === request.user._id.toString()) {
             message.remove()
             .then(result => {

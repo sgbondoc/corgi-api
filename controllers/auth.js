@@ -31,14 +31,10 @@ const register = (request, response) => {
             .then(user => {
                 response.json({message: "Saved successfully"})
             })
-            .catch(err => {
-                console.log(err)
-            })
+            .catch(err => {console.log(err)})
         })
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch(err => {console.log(err)})
 }        
 
 // login user
@@ -65,9 +61,7 @@ const login = (request, response) => {
                 return response.json({error: "Invalid credentials" })
             }
         })
-        .catch(err => {
-            console.log(err)
-        })    
+        .catch(err => {console.log(err)})    
     })    
 }
 
